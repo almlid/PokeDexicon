@@ -15,7 +15,14 @@ const PokeApiService = (() => {
     }
   };
 
-  return { getData };
+  const getDataByUrl = async (url: string) => {
+    try {
+      return await axios.get(url).then(res => res.data);
+    } catch (err: any) {
+      return Promise.reject(err);
+    }
+  };
+  return { getData, getDataByUrl };
 })();
 
 export default PokeApiService;
