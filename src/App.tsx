@@ -3,9 +3,11 @@ import "./App.css";
 import SearchResults from "./components/SearchResults";
 import { useState, useEffect } from "react";
 import { ISearchResult } from "./interfaces/ISearchResult";
+import SelectedEntry from "./components/SelectedEntry";
 
 function App() {
   const [results, setResults] = useState<ISearchResult[]>();
+  const [selectedEntry, setSelectedEntry] = useState<any>();
   const getPokemon = async () => {
     return await PokeApiService.getData("pokemon").then(res => {
       setResults(res.results);
@@ -19,7 +21,15 @@ function App() {
   return (
     <div className="App">
       <p>Hello World</p>
-      {results && <SearchResults results={results}></SearchResults>}
+
+      <SelectedEntry {...selectedEntry} />
+
+      {results && (
+        <SearchResults
+          results={results}
+          setSelectedEntry={setSelectedEntry}
+        ></SearchResults>
+      )}
     </div>
   );
 }
