@@ -4,10 +4,11 @@ import SearchResults from "./components/SearchResults";
 import { useState, useEffect } from "react";
 import { ISearchResult } from "./interfaces/ISearchResult";
 import SelectedEntry from "./components/SelectedEntry";
+import { IPokemon } from "./interfaces/IPokemon";
 
 function App() {
   const [results, setResults] = useState<ISearchResult[]>();
-  const [selectedEntry, setSelectedEntry] = useState<any>();
+  const [selectedEntry, setSelectedEntry] = useState<IPokemon | any>();
   const getPokemon = async () => {
     return await PokeApiService.getData("pokemon").then(res => {
       setResults(res.results);
@@ -20,9 +21,7 @@ function App() {
 
   return (
     <div className="App">
-      <p>Hello World</p>
-
-      <SelectedEntry {...selectedEntry} />
+      {selectedEntry && <SelectedEntry {...selectedEntry} />}
 
       {results && (
         <SearchResults

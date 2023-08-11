@@ -1,9 +1,10 @@
+import { IPokemon } from "../interfaces/IPokemon";
 import { ISearchResult } from "../interfaces/ISearchResult";
 import PokeApiService from "../services/PokeApiService";
 import { useState, useEffect } from "react";
 
 const SearchResult = ({ name, url, setSelectedEntry }: ISearchResult) => {
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<IPokemon>();
   const getItemData = async () => {
     await PokeApiService.getDataByUrl(url).then(res => setData(res));
   };
@@ -12,8 +13,9 @@ const SearchResult = ({ name, url, setSelectedEntry }: ISearchResult) => {
   }, []);
 
   const clickHandler = () => {
-    setSelectedEntry(data);
+    setSelectedEntry(data!);
     console.log("clicked", name);
+    console.log(data);
   };
 
   return (
