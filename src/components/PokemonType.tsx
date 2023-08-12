@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { typeColors } from "../data/typeColors";
-import { IType } from "../interfaces/IPokemon";
 
 interface IPokemonType {
   typeName: string;
@@ -10,13 +9,9 @@ const PokemonType = ({ typeName }: IPokemonType) => {
   const typeColor = typeColors.find(type => type.name === typeName)?.color;
 
   return (
-    <div>
-      {typeColor && (
-        <PokemonTypeWrapper typeColor={typeColor} typeName={typeName}>
-          <span>{typeName}</span>
-        </PokemonTypeWrapper>
-      )}
-    </div>
+    <PokemonTypeWrapper typeColor={typeColor!} typeName={typeName}>
+      {typeColor && <span>{typeName}</span>}
+    </PokemonTypeWrapper>
   );
 };
 
