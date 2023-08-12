@@ -29,7 +29,7 @@ const PokedexEntriesWrapper = styled.section`
   grid-area: pokedexEntries;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 1em;
+  grid-gap: 0.4em;
 
   /* margin: 1em; */
 `;

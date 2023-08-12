@@ -23,7 +23,7 @@ interface IPokemonTypeWrapper {
 
 const PokemonTypeWrapper = styled.span<IPokemonTypeWrapper>`
   background-color: ${({ $typeColor }) => $typeColor}33;
-  margin: 0.5em;
+  margin: 0.3em;
   padding: 0.5em;
   text-transform: uppercase;
   font-size: 0.6em;
