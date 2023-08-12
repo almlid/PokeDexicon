@@ -1,11 +1,11 @@
 import PokeApiService from "./services/PokeApiService";
 import "./App.css";
-import SearchResults from "./components/SearchResults";
 import { useState, useEffect } from "react";
 import { IPokemonPreview } from "./components/PokemonPreview";
-import SelectedEntry from "./components/SelectedEntry";
 import { IPokemon } from "./interfaces/IPokemon";
 import styled from "styled-components";
+import PokedexEntries from "./components/PokedexEntries";
+import Pokemon from "./components/Pokemon";
 
 function App() {
   const [results, setResults] = useState<IPokemonPreview[]>();
@@ -23,12 +23,12 @@ function App() {
   return (
     <div className="App">
       <PokedexWrapper>
-        {selectedEntry && <SelectedEntry {...selectedEntry} />}
+        {selectedEntry && <Pokemon {...selectedEntry} />}
         {results && (
-          <SearchResults
+          <PokedexEntries
             results={results}
             setSelectedEntry={setSelectedEntry}
-          ></SearchResults>
+          ></PokedexEntries>
         )}
       </PokedexWrapper>
     </div>
