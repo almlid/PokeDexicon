@@ -5,16 +5,16 @@ import { IPokemon } from "../interfaces/IPokemon";
 import PokemonPreview from "./PokemonPreview";
 
 export interface IPokedexEntries {
-  results: IPokemonPreview[];
-  setSelectedEntry: Dispatch<SetStateAction<IPokemon>>;
+  entries: IPokemonPreview[];
+  setCurrentPokemon: Dispatch<SetStateAction<IPokemon>>;
 }
 
-const PokedexEntries = ({ results, setSelectedEntry }: IPokedexEntries) => {
+const PokedexEntries = ({ entries, setCurrentPokemon }: IPokedexEntries) => {
   return (
     <PokedexEntriesWrapper>
-      {results.map(result => (
+      {entries.map(result => (
         <PokemonPreview
-          setSelectedEntry={setSelectedEntry}
+          setCurrentPokemon={setCurrentPokemon}
           key={result.url}
           name={result.name}
           url={result.url}
@@ -26,7 +26,7 @@ const PokedexEntries = ({ results, setSelectedEntry }: IPokedexEntries) => {
 
 export default PokedexEntries;
 const PokedexEntriesWrapper = styled.section`
-  grid-area: searchResults;
+  grid-area: pokedexEntries;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 1em;

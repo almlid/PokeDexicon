@@ -80,7 +80,7 @@ const Pokemon = ({
 };
 
 const PokemonWrapper = styled.section`
-  grid-area: selectedEntry;
+  grid-area: pokemon;
   display: flex;
   flex-flow: column nowrap;
 

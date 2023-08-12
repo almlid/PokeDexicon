@@ -7,10 +7,10 @@ import PokemonType from "./PokemonType";
 export interface IPokemonPreview {
   name: string;
   url: string;
-  setSelectedEntry: Dispatch<SetStateAction<IPokemon>>;
+  setCurrentPokemon: Dispatch<SetStateAction<IPokemon>>;
 }
 
-const PokemonPreview = ({ name, url, setSelectedEntry }: IPokemonPreview) => {
+const PokemonPreview = ({ name, url, setCurrentPokemon }: IPokemonPreview) => {
   const [data, setData] = useState<IPokemon>();
   const getItemData = async () => {
     await PokeApiService.getDataByUrl(url).then(res => setData(res));
@@ -20,7 +20,7 @@ const PokemonPreview = ({ name, url, setSelectedEntry }: IPokemonPreview) => {
   }, []);
 
   const clickHandler = () => {
-    setSelectedEntry(data!);
+    setCurrentPokemon(data!);
     console.log("clicked", name);
     console.log(data);
   };
