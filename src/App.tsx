@@ -2,13 +2,13 @@ import PokeApiService from "./services/PokeApiService";
 import "./App.css";
 import SearchResults from "./components/SearchResults";
 import { useState, useEffect } from "react";
-import { ISearchResult } from "./interfaces/ISearchResult";
+import { IPokemonPreview } from "./components/PokemonPreview";
 import SelectedEntry from "./components/SelectedEntry";
 import { IPokemon } from "./interfaces/IPokemon";
 import styled from "styled-components";
 
 function App() {
-  const [results, setResults] = useState<ISearchResult[]>();
+  const [results, setResults] = useState<IPokemonPreview[]>();
   const [selectedEntry, setSelectedEntry] = useState<IPokemon | any>();
   const getPokemon = async () => {
     return await PokeApiService.getData("pokemon").then(res => {

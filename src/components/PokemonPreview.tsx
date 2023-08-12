@@ -1,10 +1,16 @@
 import { IPokemon } from "../interfaces/IPokemon";
-import { ISearchResult } from "../interfaces/ISearchResult";
 import PokeApiService from "../services/PokeApiService";
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { styled } from "styled-components";
+import PokemonType from "./PokemonType";
 
-const SearchResult = ({ name, url, setSelectedEntry }: ISearchResult) => {
+export interface IPokemonPreview {
+  name: string;
+  url: string;
+  setSelectedEntry: Dispatch<SetStateAction<IPokemon>>;
+}
+
+const PokemonPreview = ({ name, url, setSelectedEntry }: IPokemonPreview) => {
   const [data, setData] = useState<IPokemon>();
   const getItemData = async () => {
     await PokeApiService.getDataByUrl(url).then(res => setData(res));
@@ -20,7 +26,7 @@ const SearchResult = ({ name, url, setSelectedEntry }: ISearchResult) => {
   };
 
   return (
-    <SearchResultEntryWrapper onClick={() => (data ? clickHandler() : "")}>
+    <PokemonPreviewWrapper onClick={() => (data ? clickHandler() : "")}>
       <p>{data && `no.${data.id}`}</p>
       {data ? (
         <img src={data.sprites.front_default} alt={`${name} sprite`} />
@@ -28,14 +34,26 @@ const SearchResult = ({ name, url, setSelectedEntry }: ISearchResult) => {
         <div>loading</div>
       )}
       <p className="name">{name}</p>
-    </SearchResultEntryWrapper>
+
+      {data && (
+        <div>
+          {data.types.map(t => (
+            <PokemonType key={t.type.url} typeName={t.type.name} />
+          ))}
+        </div>
+      )}
+    </PokemonPreviewWrapper>
   );
 };
 
-export default SearchResult;
+export default PokemonPreview;
 
-const SearchResultEntryWrapper = styled.div`
+const PokemonPreviewWrapper = styled.div`
   /* border: 1px solid black; */
+
+  & .name {
+    text-transform: capitalize;
+  }
 
   & > * {
     /* border: 1px solid black; */

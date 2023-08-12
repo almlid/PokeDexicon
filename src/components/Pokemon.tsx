@@ -1,9 +1,8 @@
-import { useEffect } from "react";
 import { IPokemon } from "../interfaces/IPokemon";
 import { styled } from "styled-components";
 import PokemonType from "./PokemonType";
 
-const SelectedEntry = ({
+const Pokemon = ({
   name,
   id,
   types,
@@ -13,8 +12,6 @@ const SelectedEntry = ({
   abilities,
   ...rest
 }: IPokemon) => {
-  useEffect(() => {}, [name]);
-
   return (
     <SelectedEntryWrapper>
       {name && (
@@ -98,4 +95,4 @@ const SelectedEntryWrapper = styled.section`
   }
 `;
 
-export default SelectedEntry;
+export default Pokemon;
