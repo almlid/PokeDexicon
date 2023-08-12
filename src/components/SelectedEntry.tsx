@@ -13,9 +13,7 @@ const SelectedEntry = ({
   abilities,
   ...rest
 }: IPokemon) => {
-  useEffect(() => {
-    console.log(name);
-  }, [name]);
+  useEffect(() => {}, [name]);
 
   return (
     <SelectedEntryWrapper>
@@ -66,7 +64,7 @@ const SelectedEntry = ({
           <div>
             <p>Types:</p>
             {types.map(t => (
-              <PokemonType typeName={t.type.name} />
+              <PokemonType key={t.type.url} typeName={t.type.name} />
             ))}
           </div>
 
