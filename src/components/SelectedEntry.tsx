@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { IPokemon } from "../interfaces/IPokemon";
+import { styled } from "styled-components";
 
 const SelectedEntry = ({
   name,
@@ -16,18 +17,20 @@ const SelectedEntry = ({
   }, [name]);
 
   return (
-    <div>
+    <SelectedEntryWrapper>
       {name && (
         <>
-          <p>no.{id}</p>
-          {/* <img src={rest.sprites.front_default} alt={name} /> */}
-          {/* <img src={rest.sprites.other.home.front_default} alt={name} /> */}
-          <img
-            src={rest.sprites.other["official-artwork"].front_default}
-            alt={name}
-          />
+          <div>
+            <p>no.{id}</p>
+            <div className="img-wrapper">
+              {/* <img src={rest.sprites.front_default} alt={name} /> */}
+              {/* <img src={rest.sprites.other.home.front_default} alt={name} /> */}
+              <img
+                src={rest.sprites.other["official-artwork"].front_default}
+                alt={name}
+              />
 
-          {/* <img
+              {/* <img
             src={rest.sprites.versions["generation-viii"].icons.front_default}
             alt={name}
           />
@@ -45,31 +48,55 @@ const SelectedEntry = ({
             }
             alt={name}
           /> */}
+            </div>
+            <p>{name}</p>
+          </div>
 
-          <p>{name}</p>
-          <p>Height: {height}</p>
-          <p>Weight: {weight}</p>
+          {/* <p>Height: {height}</p>
+          <p>Weight: {weight}</p> */}
 
-          <p>Abilities:</p>
-          {abilities.map(a => (
-            <p key={a.ability.url}>{a.ability.name}</p>
-          ))}
+          {/* <div>
+            <p>Abilities:</p>
+            {abilities.map(a => (
+              <p key={a.ability.url}>{a.ability.name}</p>
+            ))}
+          </div> */}
 
-          <p>Types:</p>
-          {types.map(t => (
-            <p key={t.type.url}>{t.type.name}</p>
-          ))}
+          <div>
+            <p>Types:</p>
+            {types.map(t => (
+              <p key={t.type.url}>{t.type.name}</p>
+            ))}
+          </div>
 
-          <p>Base stats:</p>
-          {stats.map(s => (
-            <p key={s.stat.url}>
-              {s.stat.name}: {s.base_stat}
-            </p>
-          ))}
+          <div>
+            <p>Base stats:</p>
+            {stats.map(s => (
+              <p key={s.stat.url}>
+                {s.stat.name}: {s.base_stat}
+              </p>
+            ))}
+          </div>
         </>
       )}
-    </div>
+    </SelectedEntryWrapper>
   );
 };
+
+const SelectedEntryWrapper = styled.section`
+  grid-area: selectedEntry;
+  display: flex;
+  flex-flow: column nowrap;
+
+  & > div {
+    border: 1px solid red;
+  }
+
+  & .img-wrapper {
+    display: flex;
+    justify-content: center;
+    height: 15em;
+  }
+`;
 
 export default SelectedEntry;

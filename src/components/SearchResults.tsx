@@ -23,6 +23,7 @@ const SearchResults = ({
 
 export default SearchResults;
 const SearchSection = styled.section`
+  grid-area: searchResults;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 1em;

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { ISearchResult } from "./interfaces/ISearchResult";
 import SelectedEntry from "./components/SelectedEntry";
 import { IPokemon } from "./interfaces/IPokemon";
+import styled from "styled-components";
 
 function App() {
   const [results, setResults] = useState<ISearchResult[]>();
@@ -21,16 +22,26 @@ function App() {
 
   return (
     <div className="App">
-      {selectedEntry && <SelectedEntry {...selectedEntry} />}
-
-      {results && (
-        <SearchResults
-          results={results}
-          setSelectedEntry={setSelectedEntry}
-        ></SearchResults>
-      )}
+      <PokedexWrapper>
+        {selectedEntry && <SelectedEntry {...selectedEntry} />}
+        {results && (
+          <SearchResults
+            results={results}
+            setSelectedEntry={setSelectedEntry}
+          ></SearchResults>
+        )}
+      </PokedexWrapper>
     </div>
   );
 }
+
+const PokedexWrapper = styled.div`
+  display: grid;
+
+  grid-template-areas:
+    "header header"
+    "selectedEntry searchResults";
+  grid-gap: 1em;
+`;
 
 export default App;
