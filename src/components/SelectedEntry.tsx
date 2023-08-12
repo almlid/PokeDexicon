@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { IPokemon } from "../interfaces/IPokemon";
 import { styled } from "styled-components";
+import PokemonType from "./PokemonType";
 
 const SelectedEntry = ({
   name,
@@ -65,7 +66,7 @@ const SelectedEntry = ({
           <div>
             <p>Types:</p>
             {types.map(t => (
-              <p key={t.type.url}>{t.type.name}</p>
+              <PokemonType typeName={t.type.name} />
             ))}
           </div>
 
