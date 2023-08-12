@@ -4,17 +4,14 @@ import { IPokemonPreview } from "./PokemonPreview";
 import { IPokemon } from "../interfaces/IPokemon";
 import PokemonPreview from "./PokemonPreview";
 
-export interface IPokedexEntries<ISearchResult> {
-  results: ISearchResult[];
+export interface IPokedexEntries {
+  results: IPokemonPreview[];
   setSelectedEntry: Dispatch<SetStateAction<IPokemon>>;
 }
 
-const PokedexEntries = ({
-  results,
-  setSelectedEntry,
-}: IPokedexEntries<IPokemonPreview>) => {
+const PokedexEntries = ({ results, setSelectedEntry }: IPokedexEntries) => {
   return (
-    <SearchSection>
+    <PokedexEntriesWrapper>
       {results.map(result => (
         <PokemonPreview
           setSelectedEntry={setSelectedEntry}
@@ -23,12 +20,12 @@ const PokedexEntries = ({
           url={result.url}
         ></PokemonPreview>
       ))}
-    </SearchSection>
+    </PokedexEntriesWrapper>
   );
 };
 
 export default PokedexEntries;
-const SearchSection = styled.section`
+const PokedexEntriesWrapper = styled.section`
   grid-area: searchResults;
   display: grid;
   grid-template-columns: repeat(4, 1fr);

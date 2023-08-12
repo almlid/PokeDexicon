@@ -13,7 +13,7 @@ const Pokemon = ({
   ...rest
 }: IPokemon) => {
   return (
-    <SelectedEntryWrapper>
+    <PokemonWrapper>
       {name && (
         <>
           <div>
@@ -75,11 +75,11 @@ const Pokemon = ({
           </div>
         </>
       )}
-    </SelectedEntryWrapper>
+    </PokemonWrapper>
   );
 };
 
-const SelectedEntryWrapper = styled.section`
+const PokemonWrapper = styled.section`
   grid-area: selectedEntry;
   display: flex;
   flex-flow: column nowrap;
