@@ -1,6 +1,7 @@
 import { IPokemon } from "../interfaces/IPokemon";
 import { styled } from "styled-components";
 import PokemonType from "./PokemonType";
+import PokemonStat from "./PokemonStat";
 
 const Pokemon = ({
   name,
@@ -66,12 +67,12 @@ const Pokemon = ({
           </div>
 
           <div>
-            <p>Base stats:</p>
-            {stats.map(s => (
-              <p key={s.stat.url}>
-                {s.stat.name}: {s.base_stat}
-              </p>
-            ))}
+            <p>Base stats | lvl 100 Min-Max</p>
+            <div className="stats-table">
+              {stats.map(s => (
+                <PokemonStat key={s.stat.url} {...s}></PokemonStat>
+              ))}
+            </div>
           </div>
         </>
       )}
@@ -92,6 +93,15 @@ const PokemonWrapper = styled.section`
     display: flex;
     justify-content: center;
     height: 15em;
+  }
+
+  & .stats-table {
+    display: flex;
+    flex-flow: column nowrap;
+
+    & > * {
+      margin-block: 0.1em;
+    }
   }
 `;
 
