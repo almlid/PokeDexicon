@@ -9,60 +9,41 @@ const StatAbbreviations = {
   "special-defense": "sp.def",
   speed: "speed",
 };
-const maxEv = Math.floor(255 / 4);
-const maxIv = 31;
 
-const PokemonStat = (stat: IStat) => {
+interface IPokemonStat {
+  stat: IStat;
+  level: number;
+  maxStat: number;
+  minStat: number;
+}
+
+const PokemonStat = ({ stat, level, maxStat, minStat }: IPokemonStat) => {
   const StatAbbr =
     StatAbbreviations[stat.stat.name as keyof typeof StatAbbreviations];
 
-  const level = 100;
-
-  const getMaxStat = () => {
-    if (stat.stat.name === "hp") {
-      if (stat.base_stat === 1) {
-        return 1;
-      }
-      return (
-        Math.floor(((stat.base_stat * 2 + maxIv + maxEv) * level) / 100) +
-        level +
-        10
-      );
-    }
-
-    return Math.floor(
-      (((stat.base_stat * 2 + maxIv + maxEv) * level) / 100 + 5) * 1.1
-    );
-  };
-
-  const getMinStat = () => {
-    if (stat.stat.name === "hp") {
-      if (stat.base_stat === 1) {
-        return 1;
-      }
-      return Math.floor(stat.base_stat * 2 + level + 10);
-    }
-    return Math.floor((((stat.base_stat * 2 + 5) * level) / 100) * 0.9);
-  };
-
-  console.log(stat.stat.name, (stat.base_stat / getMaxStat()) * 100);
   return (
-    <PokemonStatWrapper
-      $level={level}
-      $maxStat={getMaxStat()}
-      $minStat={getMinStat()}
-      $baseStat={stat.base_stat}
-    >
-      <>
-        <span>{StatAbbr}</span>
-        <span>{stat.base_stat}</span>
+    <tr>
+      <td>{StatAbbr}</td>
 
-        <div className="stat-bar"></div>
+      <PokemonStatWrapper
+        $level={level}
+        $maxStat={maxStat}
+        $minStat={minStat}
+        $baseStat={stat.base_stat}
+      >
+        <div
+          style={{ width: `${(stat.base_stat / 200) * 100}%` }}
+          className="stat-bar"
+        >
+          <span>{stat.base_stat}</span>
+        </div>
+      </PokemonStatWrapper>
 
-        <span>{getMinStat()}-</span>
-        <span>{getMaxStat()}</span>
-      </>
-    </PokemonStatWrapper>
+      <td>
+        <span>{minStat}</span>
+        <span className="max-stat">-{maxStat}</span>
+      </td>
+    </tr>
   );
 };
 
@@ -75,15 +56,23 @@ interface IPokemonStatWrapper {
   $baseStat: number;
 }
 
-const PokemonStatWrapper = styled.div<IPokemonStatWrapper>`
-  display: grid;
-  grid-template-columns: 3em 2em 1fr 2em 2em;
+const PokemonStatWrapper = styled.td<IPokemonStatWrapper>`
+  display: flex;
+  /* width: 150%; */
 
   & .stat-bar {
-    width: ${p => `${(p.$baseStat / p.$maxStat) * 100}%`};
-    margin-left: 0;
-    margin-right: auto;
-    background-color: red;
-    border-radius: 0 2em 2em 0;
+    background-color: #353535;
+    border-radius: 0 0.15em 0.15em 0;
+    transition: all 0.2s;
+    display: flex;
+    margin: 0.1em;
+
+    & > span {
+      font-size: 0.8em;
+      font-weight: bolder;
+      margin-block: 0.1em;
+      padding: 0.2em 0.4em;
+      color: #f3f3f3;
+    }
   }
 `;
