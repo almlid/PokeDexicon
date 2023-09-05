@@ -21,7 +21,6 @@ const Pokemon = ({
           <div>
             <p>no.{id}</p>
             <div className="img-wrapper">
-              {/* <img src={rest.sprites.front_default} alt={name} /> */}
               {/* <img src={rest.sprites.other.home.front_default} alt={name} /> */}
               <img
                 src={rest.sprites.other["official-artwork"].front_default}
@@ -50,16 +49,6 @@ const Pokemon = ({
             <p>{name}</p>
           </div>
 
-          {/* <p>Height: {height}</p>
-          <p>Weight: {weight}</p> */}
-
-          {/* <div>
-            <p>Abilities:</p>
-            {abilities.map(a => (
-              <p key={a.ability.url}>{a.ability.name}</p>
-            ))}
-          </div> */}
-
           <div>
             <p>Types:</p>
             {types.map(t => (
@@ -73,6 +62,33 @@ const Pokemon = ({
               <PokemonStats stats={stats} />
             </div>
           </div>
+          <p>Height: {height}</p>
+          <p>Weight: {weight}</p>
+
+          <div className="height-display">
+            <img
+              className="pokemon-sprite"
+              src={rest.sprites.other["official-artwork"].front_default}
+              alt={name}
+              style={{
+                height: `${height < 17.3 ? (height / 17.3) * 100 : 100}%`,
+              }}
+            />
+            <img
+              className="trainer-sprite"
+              src="images/Spr_FRLG_Brock.png"
+              alt="trainer sprite"
+              style={{
+                height: `${height < 17.3 ? 100 : (17.3 / height) * 100}%`,
+              }}
+            />
+          </div>
+          {/* <div>
+            <p>Abilities:</p>
+            {abilities.map(a => (
+              <p key={a.ability.url}>{a.ability.name}</p>
+            ))}
+          </div> */}
         </>
       )}
     </PokemonWrapper>
@@ -92,6 +108,15 @@ const PokemonWrapper = styled.section`
     display: flex;
     justify-content: center;
     height: 15em;
+  }
+
+  & .height-display {
+    height: 6em;
+
+    & > img {
+      filter: brightness(0);
+      transition: all 0.5s;
+    }
   }
 `;
 
