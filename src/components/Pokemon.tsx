@@ -1,8 +1,8 @@
 import { IPokemon } from "../interfaces/IPokemon";
 import { styled } from "styled-components";
 import PokemonType from "./PokemonType";
-import PokemonStat from "./PokemonStat";
 import PokemonStats from "./PokemonStats";
+import { useEffect, useState } from "react";
 
 const Pokemon = ({
   name,
@@ -14,9 +14,60 @@ const Pokemon = ({
   abilities,
   ...rest
 }: IPokemon) => {
-  const trainerWeight = 60;
+  const trainerWeight = 620;
   const trainerSprite = "images/Spr_FRLG_Brock.png";
   const trainerSpriteOverworld = "images/Brock_IV_OD.png";
+  const maxRotation = 12;
+  const gravity = 0.1;
+  const impactFactor = 2;
+
+  const [rotation, setRotation] = useState(0);
+  const [prevRotation, setPrevRotation] = useState(0);
+  const [bounce, setBounce] = useState(0);
+
+  useEffect(() => {
+    let frameId: number;
+
+    const animate = () => {
+      const newRotation = calculateRotation();
+      const rotationDifference = Math.abs(newRotation - rotation);
+
+      if (Math.abs(newRotation - rotation) > impactFactor) {
+        setPrevRotation(rotation);
+        setRotation(newRotation);
+        setBounce(rotationDifference);
+
+        setTimeout(() => {
+          setBounce(0);
+        }, 200);
+      } else {
+        setRotation(
+          prevRotation => prevRotation + (newRotation - prevRotation) * 0.1
+        );
+      }
+    };
+
+    frameId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
+  }, [weight, trainerWeight, rotation]);
+
+  const calculateRotation = () => {
+    const rotation = ((trainerWeight - weight) / trainerWeight) * maxRotation;
+    return Math.min(Math.max(-maxRotation, rotation), maxRotation);
+  };
+  const calculateCounterRotation = () => {
+    const rotation = ((weight - trainerWeight) / trainerWeight) * maxRotation;
+    return Math.min(Math.max(-maxRotation, rotation), maxRotation);
+  };
+
+  const getBounceAnimationYValue = (weight: number) => {
+    const distance = bounce * 20;
+    const yValue = (gravity * weight * distance) / (0.5 * weight);
+    return -yValue;
+  };
 
   return (
     <PokemonWrapper>
@@ -86,12 +137,34 @@ const Pokemon = ({
           </div>
 
           <p>Weight: {weight}</p>
+          <p>bounce: {bounce}</p>
 
           <div className="weight-display">
             <div className="weighing-scale">
-              <div className="top-part">
-                <div className="left-bowl">
-                  <div className="sprite-wrapper">
+              <div
+                className="top-part"
+                style={{
+                  transform: `rotate(${rotation}deg)`,
+                }}
+              >
+                <div
+                  className="left-bowl"
+                  style={{
+                    transform: `rotate(${calculateCounterRotation()}deg)`,
+                  }}
+                >
+                  <div
+                    className="sprite-wrapper"
+                    style={
+                      rotation < prevRotation
+                        ? {}
+                        : {
+                            transform: `translateY(${getBounceAnimationYValue(
+                              weight
+                            )}px`,
+                          }
+                    }
+                  >
                     <div>
                       <img
                         src={
@@ -104,8 +177,24 @@ const Pokemon = ({
                   </div>
                 </div>
                 <div className="balance-bar"></div>
-                <div className="right-bowl">
-                  <div className="sprite-wrapper">
+                <div
+                  className="right-bowl"
+                  style={{
+                    transform: `rotate(${calculateCounterRotation()}deg)`,
+                  }}
+                >
+                  <div
+                    className="sprite-wrapper"
+                    style={
+                      rotation < prevRotation
+                        ? {
+                            transform: `translateY(${getBounceAnimationYValue(
+                              trainerWeight
+                            )}px`,
+                          }
+                        : {}
+                    }
+                  >
                     <div>
                       <img
                         src={trainerSpriteOverworld}
@@ -172,11 +261,11 @@ const PokemonWrapper = styled.section`
         position: relative;
         width: 80%;
         margin: 0 auto;
-        /* transform: rotate(-12deg); */
+        transition: all 0.35s cubic-bezier(1, 1.2, 0.44, 1.2);
 
         & .left-bowl,
         & .right-bowl {
-          /* transform: rotate(12deg); */
+          transition: all 0.2s cubic-bezier(0.61, 1.67, 0.5, 0.82);
           width: 20%;
           height: 0.3em;
           background-color: #6b6b6b;
@@ -188,6 +277,7 @@ const PokemonWrapper = styled.section`
             display: flex;
             justify-content: center;
             position: relative;
+            transition: transform 0.4s cubic-bezier(1, 0, 0.6, 1);
           }
         }
 
@@ -214,15 +304,24 @@ const PokemonWrapper = styled.section`
         border-radius: 2em;
       }
 
-      & .bottom-part {
-        border: 1px solid #d3d;
-      }
       & .fulcrum {
         width: 1em;
         height: 1em;
         background-color: #d3d3d3;
         margin: 0 auto;
         border-radius: 50% 50% 10% 10%;
+
+        &::before {
+          content: "";
+          position: relative;
+          width: 50%;
+          height: 50%;
+          display: block;
+          background-color: #a1a1a1;
+          border-radius: 50%;
+          margin: 0 auto;
+          top: -30%;
+        }
       }
     }
   }
