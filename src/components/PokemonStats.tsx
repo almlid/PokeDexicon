@@ -50,27 +50,32 @@ const PokemonStats = ({ stats }: { stats: IStat[] }) => {
 
   return (
     <>
-      <button
-        onClick={() =>
-          setLevel(level => (level <= 100 && level >= 60 ? level - 10 : level))
-        }
-      >
-        -
-      </button>
-      <span>Level {level}</span>
-      <button
-        onClick={() =>
-          setLevel(level => (level <= 90 && level >= 50 ? level + 10 : level))
-        }
-      >
-        +
-      </button>
       <PokemonStatsWrapper>
         <thead>
           <tr>
             <th></th>
             <th>Base stats</th>
-            <th>Range at lvl. {level}</th>
+            <th className="th-level">
+              <button
+                onClick={() =>
+                  setLevel(level =>
+                    level <= 100 && level >= 60 ? level - 10 : level
+                  )
+                }
+              >
+                -
+              </button>
+              <span>Lvl.{level}</span>
+              <button
+                onClick={() =>
+                  setLevel(level =>
+                    level <= 90 && level >= 50 ? level + 10 : level
+                  )
+                }
+              >
+                +
+              </button>
+            </th>
           </tr>
         </thead>
 
@@ -105,6 +110,7 @@ const PokemonStats = ({ stats }: { stats: IStat[] }) => {
 export default PokemonStats;
 
 const PokemonStatsWrapper = styled.table`
+  width: 100%;
   & > thead > tr {
     & > th:nth-child(1) {
       width: 10%;
@@ -143,6 +149,18 @@ const PokemonStatsWrapper = styled.table`
       border-top: 0.01em solid #353535;
       padding: 0.3em;
       font-size: 0.8em;
+    }
+  }
+
+  & .th-level {
+    * {
+      margin-inline: 0.3em;
+    }
+    & button {
+      border: transparent;
+      border-radius: 50%;
+      width: 2em;
+      height: 2em;
     }
   }
 `;
