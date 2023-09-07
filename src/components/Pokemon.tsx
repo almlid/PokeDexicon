@@ -246,7 +246,7 @@ const PokemonWrapper = styled.section`
     padding: 0.8em;
     font-size: 1.1em;
     text-align: left;
-    font-weight: 600;
+    font-family: "Barlow-MediumItalic", sans-serif;
     color: #3b3b3b;
     position: absolute;
   }
