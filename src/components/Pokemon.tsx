@@ -98,7 +98,7 @@ const Pokemon = ({
     <PokemonWrapper>
       {name && (
         <>
-          <p>
+          <div>
             <p className="pokemon-id">
               #{"0000".slice(id.toString().length)}
               {id}
@@ -132,7 +132,7 @@ const Pokemon = ({
                 <PokemonType key={t.type.url} typeName={t.type.name} />
               ))}
             </div>
-          </p>
+          </div>
 
           <section>
             <p className="heading">Stats</p>
@@ -150,11 +150,7 @@ const Pokemon = ({
               <div
                 className="height-sprite-wrapper"
                 style={{
-                  height: `${
-                    height < trainerHeight
-                      ? (height / trainerHeight) * 100
-                      : (height / largestHeightRoundedUp) * 10
-                  }%`,
+                  height: `${(height / largestHeightRoundedUp) * 10}%`,
                 }}
               >
                 <span className="height-indicator">
@@ -169,11 +165,7 @@ const Pokemon = ({
               <div
                 className="height-sprite-wrapper"
                 style={{
-                  height: `${
-                    height < trainerHeight
-                      ? (trainerHeight / largestHeightRoundedUp) * 10
-                      : (trainerHeight / height) * 100
-                  }%`,
+                  height: `${(trainerHeight / largestHeightRoundedUp) * 10}%`,
                 }}
               >
                 <span className="height-indicator">
