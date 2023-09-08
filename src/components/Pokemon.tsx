@@ -146,10 +146,9 @@ const Pokemon = ({
 
             <div className="height-compare-wrapper">
               <div className="height-lines">{renderHeightReference()}</div>
-              <img
-                className="pokemon-sprite"
-                src={rest.sprites.other["official-artwork"].front_default}
-                alt={name}
+
+              <div
+                className="height-sprite-wrapper"
                 style={{
                   height: `${
                     height < trainerHeight
@@ -157,11 +156,18 @@ const Pokemon = ({
                       : (height / largestHeightRoundedUp) * 10
                   }%`,
                 }}
-              />
-              <img
-                className="trainer-sprite"
-                src={trainerSprite}
-                alt="trainer sprite"
+              >
+                <span className="height-indicator">
+                  {(height / 10).toFixed(2)} m
+                </span>
+                <img
+                  className="pokemon-sprite"
+                  src={rest.sprites.other["official-artwork"].front_default}
+                  alt={name}
+                />
+              </div>
+              <div
+                className="height-sprite-wrapper"
                 style={{
                   height: `${
                     height < trainerHeight
@@ -169,11 +175,16 @@ const Pokemon = ({
                       : (trainerHeight / height) * 100
                   }%`,
                 }}
-              />
-            </div>
-            <div className="height-numbers">
-              <span>{(height / 10).toFixed(2)} m</span>
-              <span>{(trainerHeight / 10).toFixed(2)} m</span>
+              >
+                <span className="height-indicator">
+                  {(trainerHeight / 10).toFixed(2)} m
+                </span>
+                <img
+                  className="trainer-sprite"
+                  src={trainerSprite}
+                  alt="trainer sprite"
+                />
+              </div>
             </div>
           </section>
 
@@ -314,25 +325,38 @@ const PokemonWrapper = styled.section`
 
   & .height-display {
     & .height-compare-wrapper {
+      margin-block: 2em;
       height: 6em;
       position: relative;
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      & > img {
-        margin-inline: 0.2em;
-        filter: brightness(0);
-        transition: all 0.5s cubic-bezier(1, 1.2, 0, 1.2);
-      }
-    }
 
-    & .height-numbers {
-      padding: 0.8em;
-      display: flex;
-      justify-content: space-around;
-      margin-top: 1em;
-      font-size: 0.9em;
-      border-top: 1px solid #d3d3d3;
+      & > .height-sprite-wrapper {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        margin-inline: 0.2em;
+        position: relative;
+        transition: all 0.5s cubic-bezier(1, 1.2, 0, 1.2);
+
+        & > img {
+          height: 100%;
+          filter: brightness(0);
+        }
+
+        & > .height-indicator {
+          font-family: "Barlow-Medium", sans-serif;
+          position: absolute;
+          white-space: nowrap;
+          top: -1.8em;
+          &::after {
+            content: "▾";
+            display: block;
+            margin-top: -0.3em;
+          }
+        }
+      }
     }
 
     & .height-lines {
