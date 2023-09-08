@@ -21,6 +21,9 @@ const Pokemon = ({
   const maxRotation = 12;
   const gravity = 0.1;
   const impactFactor = 2;
+  const largestHeightRoundedUp = Math.ceil(
+    (height > trainerHeight ? height : trainerHeight) / 10
+  );
 
   const [rotation, setRotation] = useState(0);
   const [prevRotation, setPrevRotation] = useState(0);
@@ -68,6 +71,27 @@ const Pokemon = ({
     const distance = bounce * 20;
     const yValue = (gravity * weight * distance) / (0.5 * weight);
     return -yValue;
+  };
+
+  const renderHeightReference = () => {
+    const numberOfRefLines = Math.ceil(
+      (height > trainerHeight ? height : trainerHeight) / 10
+    );
+    const lines = [];
+    for (let i = 0; i <= numberOfRefLines; i++) {
+      lines.push(
+        <div className="height-line" key={`height-line-${i}`}>
+          {numberOfRefLines > 6 ? (
+            i % 2 === 0 ? (
+              <span>{i}</span>
+            ) : null
+          ) : (
+            <span>{i}</span>
+          )}
+        </div>
+      );
+    }
+    return lines;
   };
 
   return (
@@ -121,12 +145,17 @@ const Pokemon = ({
             <p className="heading">Height</p>
 
             <div className="height-compare-wrapper">
+              <div className="height-lines">{renderHeightReference()}</div>
               <img
                 className="pokemon-sprite"
                 src={rest.sprites.other["official-artwork"].front_default}
                 alt={name}
                 style={{
-                  height: `${height < 17.3 ? (height / 17.3) * 100 : 100}%`,
+                  height: `${
+                    height < trainerHeight
+                      ? (height / trainerHeight) * 100
+                      : (height / largestHeightRoundedUp) * 10
+                  }%`,
                 }}
               />
               <img
@@ -134,7 +163,11 @@ const Pokemon = ({
                 src={trainerSprite}
                 alt="trainer sprite"
                 style={{
-                  height: `${height < 17.3 ? 100 : (17.3 / height) * 100}%`,
+                  height: `${
+                    height < trainerHeight
+                      ? (trainerHeight / largestHeightRoundedUp) * 10
+                      : (trainerHeight / height) * 100
+                  }%`,
                 }}
               />
             </div>
@@ -282,7 +315,12 @@ const PokemonWrapper = styled.section`
   & .height-display {
     & .height-compare-wrapper {
       height: 6em;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
       & > img {
+        margin-inline: 0.2em;
         filter: brightness(0);
         transition: all 0.5s cubic-bezier(1, 1.2, 0, 1.2);
       }
@@ -295,6 +333,34 @@ const PokemonWrapper = styled.section`
       margin-top: 1em;
       font-size: 0.9em;
       border-top: 1px solid #d3d3d3;
+    }
+
+    & .height-lines {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-flow: column-reverse nowrap;
+      justify-content: space-between;
+    }
+
+    & .height-line {
+      position: relative;
+      color: #959595;
+      background-color: #e8e8e8;
+      border-radius: 0.5em;
+      height: 0.1em;
+
+      & > span {
+        font-weight: bold;
+        position: absolute;
+        left: 2em;
+        background-color: #fff;
+        padding: 0.2em 0.4em;
+        border-radius: 0.5em;
+        top: -0.7em;
+        font-size: 0.6em;
+      }
     }
   }
 
