@@ -130,8 +130,16 @@ const WeightDisplay = ({ weight, name, sprite }: IWeightDisplay) => {
         </div>
       </div>
       <div className="weight-numbers">
-        <span>{Math.round(weight / 10)} kg</span>
-        <span>{trainerWeight / 10} kg</span>
+        <span className="weight-indicator" key={weight}>
+          {Math.round(weight / 10)} kg
+        </span>
+        <span
+          className="weight-indicator"
+          key={trainerWeight}
+          style={{ animationDelay: "0.15s" }}
+        >
+          {trainerWeight / 10} kg
+        </span>
       </div>
     </WeightDisplayWrapper>
   );
@@ -145,10 +153,11 @@ const WeightDisplayWrapper = styled.section`
     display: flex;
     align-items: end;
     justify-content: center;
+    padding: 0 10%;
 
     & .weighing-scale {
       bottom: 0;
-      width: 90%;
+      width: 100%;
       height: 2em;
       & .top-part {
         display: flex;
@@ -166,6 +175,7 @@ const WeightDisplayWrapper = styled.section`
           border-radius: 0.5em 0.5em 50% 50%;
           position: absolute;
           bottom: 80%;
+          border-bottom: 0.1em solid #3f3f3f;
 
           & .sprite-wrapper {
             display: flex;
@@ -196,6 +206,7 @@ const WeightDisplayWrapper = styled.section`
         background-color: #d3d3d3;
         margin: 0 auto;
         border-radius: 2em;
+        border-bottom: 0.1em solid #bababa;
       }
 
       & .fulcrum {
@@ -204,6 +215,8 @@ const WeightDisplayWrapper = styled.section`
         background-color: #d3d3d3;
         margin: 0 auto;
         border-radius: 50% 50% 10% 10%;
+        border-bottom: 0.1em solid #bababa;
+        border-top: 0.1em solid #bababa;
 
         &::before {
           content: "";
@@ -212,6 +225,8 @@ const WeightDisplayWrapper = styled.section`
           height: 50%;
           display: block;
           background-color: #a1a1a1;
+          border-bottom: 0.1em solid #959595;
+          box-sizing: border-box;
           border-radius: 50%;
           margin: 0 auto;
           top: -30%;
@@ -219,12 +234,27 @@ const WeightDisplayWrapper = styled.section`
       }
     }
   }
+
   & .weight-numbers {
     padding: 0.8em;
+    position: relative;
     display: flex;
-    justify-content: space-around;
-    margin-top: 1em;
-    font-size: 0.9em;
-    border-top: 1px solid #d3d3d3;
+    justify-content: space-between;
+    padding: 1em 12% 0.6em;
+    border-top: 0.1em solid #d3d3d3;
+
+    & > .weight-indicator {
+      animation: scaleUp 0.2s cubic-bezier(1, 1.2, 0.44, 1.2) forwards;
+      font-family: "Barlow-Medium", sans-serif;
+      white-space: nowrap;
+    }
+    @keyframes scaleUp {
+      from {
+        transform: scale(0);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
   }
 `;
