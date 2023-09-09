@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import PokemonType from "./PokemonType";
 import PokemonStats from "./PokemonStats";
 import { useEffect, useState } from "react";
+import HeightDisplay from "./HeightDisplay";
 
 const Pokemon = ({
   name,
@@ -15,15 +16,11 @@ const Pokemon = ({
   ...rest
 }: IPokemon) => {
   const trainerWeight = 620;
-  const trainerHeight = 17.3;
-  const trainerSprite = "images/Spr_FRLG_Brock.png";
+
   const trainerSpriteOverworld = "images/Brock_IV_OD.png";
   const maxRotation = 12;
   const gravity = 0.1;
   const impactFactor = 2;
-  const largestHeightRoundedUp = Math.ceil(
-    (height > trainerHeight ? height : trainerHeight) / 10
-  );
 
   const [rotation, setRotation] = useState(0);
   const [prevRotation, setPrevRotation] = useState(0);
@@ -73,27 +70,6 @@ const Pokemon = ({
     return -yValue;
   };
 
-  const renderHeightReference = () => {
-    const numberOfRefLines = Math.ceil(
-      (height > trainerHeight ? height : trainerHeight) / 10
-    );
-    const lines = [];
-    for (let i = 0; i <= numberOfRefLines; i++) {
-      lines.push(
-        <div className="height-line" key={`height-line-${i}`}>
-          {numberOfRefLines > 6 ? (
-            i % 2 === 0 ? (
-              <span>{i}</span>
-            ) : null
-          ) : (
-            <span>{i}</span>
-          )}
-        </div>
-      );
-    }
-    return lines;
-  };
-
   return (
     <PokemonWrapper>
       {name && (
@@ -141,44 +117,12 @@ const Pokemon = ({
             </div>
           </section>
 
-          <section className="height-display">
-            <p className="heading">Height</p>
-
-            <div className="height-compare-wrapper">
-              <div className="height-lines">{renderHeightReference()}</div>
-
-              <div
-                className="height-sprite-wrapper"
-                style={{
-                  height: `${(height / largestHeightRoundedUp) * 10}%`,
-                }}
-              >
-                <span className="height-indicator">
-                  {(height / 10).toFixed(2)} m
-                </span>
-                <img
-                  className="pokemon-sprite"
-                  src={rest.sprites.other["official-artwork"].front_default}
-                  alt={name}
-                />
-              </div>
-              <div
-                className="height-sprite-wrapper"
-                style={{
-                  height: `${(trainerHeight / largestHeightRoundedUp) * 10}%`,
-                }}
-              >
-                <span className="height-indicator">
-                  {(trainerHeight / 10).toFixed(2)} m
-                </span>
-                <img
-                  className="trainer-sprite"
-                  src={trainerSprite}
-                  alt="trainer sprite"
-                />
-              </div>
-            </div>
-          </section>
+          <HeightDisplay
+            height={height}
+            sprite={rest.sprites.other["official-artwork"].front_default}
+            name={name}
+          />
+          <section className="height-display"></section>
 
           <section className="weight-display">
             <p className="heading">Weight</p>
@@ -312,71 +256,6 @@ const PokemonWrapper = styled.section`
     height: 15em;
     & > img {
       padding: 1em;
-    }
-  }
-
-  & .height-display {
-    & .height-compare-wrapper {
-      margin-block: 2em;
-      height: 6em;
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-
-      & > .height-sprite-wrapper {
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        margin-inline: 0.2em;
-        position: relative;
-        transition: all 0.5s cubic-bezier(1, 1.2, 0, 1.2);
-
-        & > img {
-          height: 100%;
-          filter: brightness(0);
-        }
-
-        & > .height-indicator {
-          font-family: "Barlow-Medium", sans-serif;
-          position: absolute;
-          white-space: nowrap;
-          top: -1.8em;
-          &::after {
-            content: "▾";
-            display: block;
-            margin-top: -0.3em;
-          }
-        }
-      }
-    }
-
-    & .height-lines {
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      display: flex;
-      flex-flow: column-reverse nowrap;
-      justify-content: space-between;
-    }
-
-    & .height-line {
-      position: relative;
-      color: #959595;
-      background-color: #e8e8e8;
-      border-radius: 0.5em;
-      height: 0.1em;
-
-      & > span {
-        font-weight: bold;
-        position: absolute;
-        left: 2em;
-        background-color: #fff;
-        padding: 0.2em 0.4em;
-        border-radius: 0.5em;
-        top: -0.7em;
-        font-size: 0.6em;
-      }
     }
   }
 
