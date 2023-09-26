@@ -28,6 +28,11 @@ const PokedexWrapper = styled.div`
     "header header"
     "pokemon searchSection";
   grid-gap: 1em;
+  width: 80vw;
+  min-width: 820px;
+  max-width: 1160px;
+  margin-inline: auto;
+  display: flex;
 `;
 
 export default App;
