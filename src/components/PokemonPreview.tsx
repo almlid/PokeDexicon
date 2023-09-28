@@ -1,8 +1,8 @@
 import { IPokemon } from "../interfaces/IPokemon";
-import PokeApiService from "../services/PokeApiService";
-import { useState, useEffect, SetStateAction, Dispatch } from "react";
+import { SetStateAction, Dispatch } from "react";
 import { styled } from "styled-components";
 import PokemonType from "./PokemonType";
+import { useAxios } from "../hooks/useAxios";
 
 export interface IPokemonPreview {
   name: string;
@@ -18,47 +18,41 @@ const PokemonPreview = ({
   size,
 }: IPokemonPreview) => {
   const standardSize = "size-1";
-  const [data, setData] = useState<IPokemon>();
-  const getItemData = async () => {
-    await PokeApiService.getDataByUrl(url).then(res => setData(res));
-  };
-  useEffect(() => {
-    getItemData();
-  }, []);
 
   const clickHandler = () => {
-    setCurrentPokemon(data!);
+    setCurrentPokemon(pokemon!);
     console.log("clicked", name);
-    console.log(data);
   };
+
+  const pokemon = useAxios(url) as IPokemon;
 
   return (
     <PokemonPreviewWrapper
-      onClick={() => (data ? clickHandler() : "")}
+      onClick={() => (pokemon ? clickHandler() : "")}
       className={`${size ? `size-${size}` : standardSize}`}
     >
       <p className={`pokemon-name ${size ? `size-${size}` : standardSize}`}>
         {name}
       </p>
 
-      {data && (
+      {pokemon && (
         <p className={`pokemon-id ${size ? `size-${size}` : standardSize}`}>
-          #{"0000".slice(data.id.toString().length)}
-          {data.id}
+          #{"0000".slice(pokemon.id.toString().length)}
+          {pokemon.id}
         </p>
       )}
-      {data && (
+      {pokemon && (
         <div
           className={`pokemon-types ${size ? `size-${size}` : standardSize}`}
         >
-          {data.types.map(t => (
+          {pokemon.types.map(t => (
             <PokemonType key={t.type.url} typeName={t.type.name} />
           ))}
         </div>
       )}
       <div className={`img-wrapper ${size ? `size-${size}` : standardSize}`}>
-        {data ? (
-          <img src={data.sprites.front_default} alt={`${name} sprite`} />
+        {pokemon ? (
+          <img src={pokemon.sprites.front_default} alt={`${name} sprite`} />
         ) : (
           <div>loading</div>
         )}

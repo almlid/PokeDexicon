@@ -1,9 +1,17 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { IPokemonPreview } from "./PokemonPreview";
-import PokeApiService from "../services/PokeApiService";
+import { baseUrl } from "../config/apiRoutes";
 import PokedexEntries from "./PokedexEntries";
 import { IPokemon } from "../interfaces/IPokemon";
 import { styled } from "styled-components";
+import { useAxios } from "../hooks/useAxios";
+
+export interface IPokemonPage {
+  count: number;
+  next: string;
+  previous: string;
+  results: IPokemonPreview[];
+}
 
 const SearchSection = ({
   setCurrentPokemon,
@@ -17,24 +25,14 @@ const SearchSection = ({
   const pages = Math.ceil(resultCount / fetchLimit);
   const currentPage = Math.ceil(offset / fetchLimit + 1);
 
-  const [currentEntries, setCurrentEntries] = useState<IPokemonPreview[]>();
-
-  const getPokemon = async (offset?: number) => {
-    return await PokeApiService.getData(
-      `pokemon${offset ? `?offset=${offset}` : ""}`
-    ).then(res => {
-      setCurrentEntries(res.results);
-      setResultCount(res.count);
-    });
-  };
+  const pokemonPage = useAxios(
+    `${baseUrl}pokemon${offset ? `?offset=${offset}` : ""}`,
+    [offset]
+  ) as IPokemonPage;
 
   useEffect(() => {
-    getPokemon();
-  }, []);
-
-  useEffect(() => {
-    getPokemon(offset);
-  }, [offset]);
+    pokemonPage && setResultCount(pokemonPage.count);
+  }, [pokemonPage]);
 
   const getNext = () => {
     const newOffset = offset + fetchLimit;
@@ -103,9 +101,9 @@ const SearchSection = ({
       <p>
         Pages: {pages} -- Current page: {currentPage}
       </p>
-      {currentEntries && (
+      {pokemonPage && (
         <PokedexEntries
-          entries={currentEntries}
+          entries={pokemonPage.results}
           setCurrentPokemon={setCurrentPokemon}
         ></PokedexEntries>
       )}
