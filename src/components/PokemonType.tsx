@@ -84,7 +84,7 @@ const PokemonTypeWrapper = styled.span<IPokemonTypeWrapper>`
   & > span {
     color: ${({ $typeColor }) => $typeColor};
     font-family: "Barlow-SemiBold";
-    color: color-mix(in srgb, ${({ $typeColor }) => $typeColor}, #000000 30%);
+    color: color-mix(in srgb, ${({ $typeColor }) => $typeColor}, #000000 40%);
     margin-left: 0.3em;
     margin-inline: 0.4em;
   }
@@ -96,7 +96,7 @@ const PokemonTypeWrapper = styled.span<IPokemonTypeWrapper>`
     background-color: color-mix(
       in srgb,
       ${({ $typeColor }) => $typeColor},
-      #00000050 50%
+      #00000050 30%
     );
   }
 `;
