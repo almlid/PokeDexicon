@@ -24,7 +24,7 @@ const PokemonPreview = ({
     console.log("clicked", name);
   };
 
-  const pokemon = useAxios(url) as IPokemon;
+  const pokemon = useAxios(url, []) as IPokemon;
 
   return (
     <PokemonPreviewWrapper
