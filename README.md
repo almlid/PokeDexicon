@@ -1,46 +1,45 @@
-# Getting Started with Create React App
+# PokéDexicon
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The **PokéDexicon** is a web-based Pokédex inspired by the classic Pokédex from the Pokémon games. Its primary goal is to provide a user-friendly and engaging encyclopedia for exploring detailed information about Pokémon.
 
-## Available Scripts
+Utilizes the [PokéAPI](https://pokeapi.co/) to fetch up-to-date Pokémon information under the hood, ensuring that users have access to the latest data.
 
-In the project directory, you can run:
+## Key Features
 
-### `npm start`
+- Retrieve and **display detailed information** about different Pokémon species.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Trainer to Pokémon **height/weight ratio calculators** with graphical displays.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Interactive **Pokémon stats display** calculated with the well-documented [formula from Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Stat#Formula).
 
-### `npm test`
+- **Paginated cards** for navigating through all existing Pokémon with flexible view options including list view, column view and dense column view.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Roadmap
 
-### `npm run build`
+The development of the PokéDexicon is an ongoing journey, and there are several future improvements planned:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Expand the information available for each Pokémon species.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Implement robust search and filtering capabilities to help users find and discover Pokémon with ease.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Add caching functionality to improve performance and load times.
 
-### `npm run eject`
+- Optimize UI for Mobile.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Contributing
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Whether you're a developer or a Pokémon enthusiast, your contributions are valued. Here's how you can help:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- **Bug Reports:** If you encounter issues or unexpected behavior, please report them with details and steps to reproduce.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- **Feature Requests:** Have an idea for a new feature or improvement? Share it with me!
 
-## Learn More
+- **Code Contributions:** Developers can fork the repository, make changes, and submit pull requests for review.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **Documentation:** Help improve the documentation by fixing errors or adding examples.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Feedback:** Share your thoughts and ideas.
+
+Feel free to contribute! Together, we can make this project even better.
+
+Thank you for your interest in the PokéDexicon!
