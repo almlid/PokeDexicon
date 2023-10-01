@@ -1,16 +1,21 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
-export const useAxios = (endpoint: string, deps?: any[]): unknown | Error => {
-  const [data, setData] = useState();
+export function useAxios<T = any>(endpoint: string, deps?: any[]) {
+  const [response, setResponse] = useState<T>();
+  const [error, setError] = useState<AxiosError>();
+  const [loading, setLoading] = useState(true);
 
   const getData = async (endpoint: string) => {
+    setLoading(true);
     return await axios
       .get(endpoint)
-      .then(res => setData(res.data))
+      .then(res => setResponse(res.data))
 
-      .catch((err: any) => {
-        return Promise.reject(err);
+      .catch(setError)
+
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -18,5 +23,5 @@ export const useAxios = (endpoint: string, deps?: any[]): unknown | Error => {
     getData(endpoint);
   }, deps);
 
-  return data;
-};
+  return { response, error, loading };
+}
