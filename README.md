@@ -14,6 +14,23 @@ Utilizes the [PokéAPI](https://pokeapi.co/) to fetch up-to-date Pokémon inform
 
 - **Paginated cards** for navigating through all existing Pokémon with flexible view options including list view, column view and dense column view.
 
+---
+
+<p align="center">
+<img src="https://github.com/almlid/PokeDexicon/assets/75735113/dcdf29c7-904c-459d-b97d-04dbf7691dbe" alt="animated preview of trainer to pokemon height ratio display" />
+  ㅤ
+<img src="https://github.com/almlid/PokeDexicon/assets/75735113/406ccdfa-f89d-4a36-ad28-aed8c9817af1" alt="animated preview of trainer to pokemon weight ratio display" />
+</p>
+<p align="center"><em>Preview of trainer to pokemon height/weight ratio displays</em></p>
+</br>
+
+<p align="center">
+  <img src="https://github.com/almlid/PokeDexicon/assets/75735113/d816554a-9863-4b79-a72d-5fcde3238896" alt="animated preview of "/>
+</p>
+<p align="center"><em>Preview of different view options for paginated cards</em></p>
+
+---
+
 ## Roadmap
 
 The development of the PokéDexicon is an ongoing journey, and there are several future improvements planned:
