@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { IPokemonPreview } from "./PokemonPreview";
 import { baseUrl } from "../config/apiRoutes";
-import PokedexEntries from "./PokedexEntries";
+import PokemonPreviews from "./PokemonPreviews";
 import { IPokemon } from "../interfaces/IPokemon";
 import { styled } from "styled-components";
 import { useAxios } from "../hooks/useAxios";
@@ -102,10 +102,10 @@ const SearchSection = ({
         Pages: {pages} -- Current page: {currentPage}
       </p>
       {pokemonPage && (
-        <PokedexEntries
+        <PokemonPreviews
           entries={pokemonPage.results}
           setCurrentPokemon={setCurrentPokemon}
-        ></PokedexEntries>
+        ></PokemonPreviews>
       )}
       <PageNavWrapper>
         <button onClick={getPrevious}>←</button>

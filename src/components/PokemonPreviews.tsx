@@ -4,14 +4,14 @@ import { IPokemonPreview } from "./PokemonPreview";
 import { IPokemon } from "../interfaces/IPokemon";
 import PokemonPreview from "./PokemonPreview";
 
-export interface IPokedexEntries {
+export interface IPokemonPreviews {
   entries: IPokemonPreview[];
   setCurrentPokemon: Dispatch<SetStateAction<IPokemon>>;
 }
 
-const PokedexEntries = ({ entries, setCurrentPokemon }: IPokedexEntries) => {
+const PokemonPreviews = ({ entries, setCurrentPokemon }: IPokemonPreviews) => {
   return (
-    <PokedexEntriesWrapper>
+    <PokemonPreviewsWrapper>
       {entries.map(result => (
         <PokemonPreview
           setCurrentPokemon={setCurrentPokemon}
@@ -20,13 +20,14 @@ const PokedexEntries = ({ entries, setCurrentPokemon }: IPokedexEntries) => {
           url={result.url}
         ></PokemonPreview>
       ))}
-    </PokedexEntriesWrapper>
+    </PokemonPreviewsWrapper>
   );
 };
 
-export default PokedexEntries;
-const PokedexEntriesWrapper = styled.section`
-  grid-area: pokedexEntries;
+export default PokemonPreviews;
+
+const PokemonPreviewsWrapper = styled.section`
+  grid-area: PokemonPreviews;
   display: flex;
   flex-flow: row wrap;
 `;
