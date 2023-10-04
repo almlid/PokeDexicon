@@ -25,10 +25,14 @@ const SearchSection = ({
   const pages = Math.ceil(resultCount / fetchLimit);
   const currentPage = Math.ceil(offset / fetchLimit + 1);
 
-  const pokemonPage = useAxios(
+  const {
+    response: pokemonPage,
+    error,
+    loading,
+  } = useAxios<IPokemonPage>(
     `${baseUrl}pokemon${offset ? `?offset=${offset}` : ""}`,
     [offset]
-  ) as IPokemonPage;
+  );
 
   useEffect(() => {
     pokemonPage && setResultCount(pokemonPage.count);
