@@ -28,7 +28,7 @@ const PokemonPreview = ({
 
   return (
     <PokemonPreviewWrapper
-      onClick={() => (pokemon ? clickHandler() : "")}
+      onClick={clickHandler}
       className={`${size ? `size-${size}` : standardSize}`}
     >
       <p className={`pokemon-name ${size ? `size-${size}` : standardSize}`}>
