@@ -128,6 +128,9 @@ const PokemonPreviewWrapper = styled.div`
   & .pokemon-name {
     text-transform: capitalize;
     grid-area: name;
+    color: #595959;
+    font-family: "Barlow-Medium";
+    letter-spacing: 0.3px;
 
     &.size {
       &-2 {
