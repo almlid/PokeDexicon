@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { IPokemonPreview } from "./PokemonPreview";
 import { baseUrl } from "../config/apiRoutes";
 import PokemonPreviews from "./PokemonPreviews";
@@ -13,67 +13,99 @@ export interface IPokemonPage {
   results: IPokemonPreview[];
 }
 
+const pageSize = 20;
+
 const SearchSection = ({
   setCurrentPokemon,
 }: {
   setCurrentPokemon: Dispatch<SetStateAction<IPokemon>>;
 }) => {
-  const [resultCount, setResultCount] = useState(0);
-  const [fetchLimit, setFetchLimit] = useState(20);
-  const [offset, setOffset] = useState(0);
-  const maxOffset = resultCount - fetchLimit;
-  const pages = Math.ceil(resultCount / fetchLimit);
-  const currentPage = Math.ceil(offset / fetchLimit + 1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentUrl, setCurrentUrl] = useState("");
 
   const {
     response: pokemonPage,
+    // TODO: Handle error and loading states
     error,
     loading,
   } = useAxios<IPokemonPage>(
-    `${baseUrl}pokemon${offset ? `?offset=${offset}` : ""}`,
-    [offset]
+    currentUrl || `${baseUrl}pokemon?limit=${pageSize}`,
+    [currentUrl]
   );
 
-  useEffect(() => {
-    pokemonPage && setResultCount(pokemonPage.count);
-  }, [pokemonPage]);
+  if (error) {
+    console.error(error);
+  }
 
-  const getNext = () => {
-    const newOffset = offset + fetchLimit;
-    setOffset(newOffset >= maxOffset ? maxOffset : newOffset);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const { count: numberOfResults } = pokemonPage!;
+  const totalAmountOfPages = Math.ceil(numberOfResults / pageSize);
+
+  const navigateNextPage = () => {
+    if (!pokemonPage?.next) return;
+    setCurrentUrl(pokemonPage!.next);
+    setCurrentPage(currentPage + 1);
   };
 
-  const getPrevious = () => {
-    const newOffset = offset - fetchLimit;
-    setOffset(newOffset <= 0 ? 0 : newOffset);
+  const navigatePreviousPage = () => {
+    if (!pokemonPage?.previous) return;
+    setCurrentUrl(pokemonPage!.previous);
+    setCurrentPage(currentPage - 1);
   };
 
-  const jumpToPage = (page: number) => {
-    setOffset((page - 1) * fetchLimit);
+  const jumpToPage = (pageNumber: number) => {
+    const offset = pageNumber * pageSize - pageSize;
+    setCurrentUrl(`${baseUrl}pokemon?offset=${offset}&limit=${pageSize}`);
+    setCurrentPage(pageNumber);
   };
 
   const renderPageNumberButtons = () => {
     const buttons = [];
-    for (let i = 1; i <= pages; i++) {
-      if (i === currentPage) {
-        buttons.push(
-          <span className="active" key={i}>
-            {i}
-          </span>
-        );
-      } else if (
-        i !== 1 &&
-        i !== pages &&
-        i >= currentPage - 2 &&
-        i <= currentPage + 2
-      ) {
-        buttons.push(
-          <button key={i} onClick={() => jumpToPage(i)}>
-            {i}
-          </button>
-        );
-      }
-    }
+    if (currentPage - 2 > 2)
+      buttons.push(
+        <button
+          key={currentPage - 2}
+          onClick={() => jumpToPage(currentPage - 2)}
+        >
+          {currentPage - 2}
+        </button>
+      );
+    if (currentPage - 1 > 1)
+      buttons.push(
+        <button
+          key={currentPage - 1}
+          onClick={() => jumpToPage(currentPage - 1)}
+        >
+          {currentPage - 1}
+        </button>
+      );
+    buttons.push(
+      <span className="active" key={currentPage}>
+        {currentPage}
+      </span>
+    );
+    if (currentPage + 1 <= totalAmountOfPages - 1)
+      buttons.push(
+        <button
+          key={currentPage + 1}
+          onClick={() => jumpToPage(currentPage + 1)}
+        >
+          {currentPage + 1}
+        </button>
+      );
+    if (currentPage + 2 <= totalAmountOfPages - 2)
+      buttons.push(
+        <button
+          key={currentPage + 2}
+          onClick={() => jumpToPage(currentPage + 2)}
+        >
+          {currentPage + 2}
+        </button>
+      );
+
     return buttons;
   };
 
@@ -86,6 +118,7 @@ const SearchSection = ({
         ...
       </option>,
     ];
+
     for (let i = firstPage; i <= lastPage; i++) {
       options.push(
         <option key={i} value={i - 1}>
@@ -99,20 +132,14 @@ const SearchSection = ({
   return (
     <SearchSectionWrapper>
       <p>
-        Results: {resultCount} -- Current results: {offset + 1}-
-        {offset + fetchLimit}
+        Pages: {totalAmountOfPages} -- Current page: {currentPage}
       </p>
-      <p>
-        Pages: {pages} -- Current page: {currentPage}
-      </p>
-      {pokemonPage && (
-        <PokemonPreviews
-          entries={pokemonPage.results}
-          setCurrentPokemon={setCurrentPokemon}
-        ></PokemonPreviews>
-      )}
+      <PokemonPreviews
+        entries={pokemonPage!.results}
+        setCurrentPokemon={setCurrentPokemon}
+      ></PokemonPreviews>
       <PageNavWrapper>
-        <button onClick={getPrevious}>←</button>
+        <button onClick={navigatePreviousPage}>←</button>
 
         {currentPage > 1 && (
           <button key={1} onClick={() => jumpToPage(1)}>
@@ -123,7 +150,6 @@ const SearchSection = ({
         {currentPage > 4 && (
           <select
             onChange={e => {
-              setOffset(+e.target.value * fetchLimit);
               e.target.value = "...";
             }}
             defaultValue={"..."}
@@ -134,25 +160,30 @@ const SearchSection = ({
 
         {renderPageNumberButtons()}
 
-        {currentPage < pages - 3 && (
+        {currentPage < totalAmountOfPages - 3 && (
           <select
             onChange={e => {
-              setOffset(+e.target.value * fetchLimit);
               e.target.value = "...";
             }}
             defaultValue={"..."}
           >
-            {renderPageNumberSelectOptions(currentPage + 3, pages - 1)}
+            {renderPageNumberSelectOptions(
+              currentPage + 3,
+              totalAmountOfPages - 1
+            )}
           </select>
         )}
 
-        {currentPage < pages && (
-          <button key={pages} onClick={() => jumpToPage(pages)}>
-            {pages}
+        {currentPage < totalAmountOfPages && (
+          <button
+            key={totalAmountOfPages}
+            onClick={() => jumpToPage(totalAmountOfPages)}
+          >
+            {totalAmountOfPages}
           </button>
         )}
 
-        <button onClick={getNext}>→</button>
+        <button onClick={navigateNextPage}>→</button>
       </PageNavWrapper>
     </SearchSectionWrapper>
   );
